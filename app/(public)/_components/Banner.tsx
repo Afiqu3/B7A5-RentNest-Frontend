@@ -61,7 +61,7 @@ export default function Banner() {
             className="inline-flex items-center gap-2 rounded-full border border-border bg-muted/60 px-4 py-1.5 text-sm font-medium text-muted-foreground backdrop-blur"
           >
             <Sparkles className="size-4 text-primary" />
-            Find your next home, the easy way
+            Find & List Rental Properties with Ease
           </motion.span>
 
           <motion.h1
