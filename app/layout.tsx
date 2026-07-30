@@ -2,6 +2,7 @@ import "./globals.css";
 import { Outfit, Raleway } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/shared/ThemeProvider";
+import { Toaster } from "@/components/ui/sonner";
 
 const ralewayHeading = Raleway({
   subsets: ["latin"],
@@ -35,6 +36,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <div className="flex flex-1 flex-col">{children}</div>
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>

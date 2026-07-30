@@ -7,3 +7,19 @@ export type LoginState = {
         refreshToken : string
     }
 }
+
+export type Role = "TENANT" | "LANDLORD";
+
+
+export type RegistrationState = {
+  success: boolean;
+  statusCode: number;
+  message: string;
+  data: {
+    name: string;
+    email: string;
+    password: string;
+    phone: string;
+    role: Role;
+  };
+};
