@@ -127,3 +127,42 @@
     @apply font-sans;
   }
 }
+/* Reviews carousel (Swiper) overrides */
+.reviews-swiper-shell .swiper-wrapper {
+  align-items: stretch;
+}
+.reviews-swiper-shell .swiper-slide {
+  height: auto;
+  display: flex;
+}
+.reviews-swiper-shell .swiper-button-next,
+.reviews-swiper-shell .swiper-button-prev {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 9999px;
+  border: 1px solid var(--border);
+  background: color-mix(in oklab, var(--background) 80%, transparent);
+  backdrop-filter: blur(6px);
+  color: var(--primary);
+  transition: transform 0.2s ease, background 0.2s ease;
+  top: 42%;
+}
+.reviews-swiper-shell .swiper-button-next:hover,
+.reviews-swiper-shell .swiper-button-prev:hover {
+  transform: scale(1.06);
+  background: var(--background);
+}
+.reviews-swiper-shell .swiper-button-next::after,
+.reviews-swiper-shell .swiper-button-prev::after {
+  font-size: var(--swiper-navigation-size);
+}
+.reviews-swiper-shell .swiper-button-disabled {
+  opacity: 0.35;
+}
+.reviews-swiper-shell .swiper-pagination-bullet {
+  transition: width 0.25s ease, opacity 0.25s ease;
+}
+.reviews-swiper-shell .swiper-pagination-bullet-active {
+  width: 22px;
+  border-radius: 9999px;
+}
