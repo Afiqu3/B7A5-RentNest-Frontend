@@ -27,8 +27,10 @@ const LoginForm = () => {
     }
   }, [state]);
 
+  const errors = state && !state.success ? state.errors : undefined;
+
   return (
-    <form action={action}>
+    <form action={action} noValidate>
       <div className="flex flex-col gap-6">
         <div className="grid gap-2">
           <Label className="text-xs md:text-base" htmlFor="email">
@@ -39,15 +41,36 @@ const LoginForm = () => {
             name="email"
             type="email"
             placeholder="m@example.com"
+            aria-invalid={Boolean(errors?.email)}
+            aria-describedby={errors?.email ? "email-error" : undefined}
             required
           />
+          {errors?.email && (
+            <p id="email-error" className="text-xs font-medium text-destructive">
+              {errors.email[0]}
+            </p>
+          )}
         </div>
 
         <div className="grid gap-2">
           <Label className="text-xs md:text-base" htmlFor="password">
             Password
           </Label>
-          <PasswordInput id="password" name="password" required />
+          <PasswordInput
+            id="password"
+            name="password"
+            aria-invalid={Boolean(errors?.password)}
+            aria-describedby={errors?.password ? "password-error" : undefined}
+            required
+          />
+          {errors?.password && (
+            <p
+              id="password-error"
+              className="text-xs font-medium text-destructive"
+            >
+              {errors.password[0]}
+            </p>
+          )}
         </div>
 
         <div className="space-y-3">

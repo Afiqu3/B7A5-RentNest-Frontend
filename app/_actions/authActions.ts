@@ -1,17 +1,31 @@
 "use server";
 
 import { cookies } from "next/headers";
+import { z } from "zod";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { redirect } from "next/navigation";
-import { LoginState, RegistrationState } from "@/lib/types";
+import { LoginFormState, RegisterFormState } from "@/lib/types";
+import { loginSchema, registerSchema } from "@/lib/validations";
 
 export const loginAction = async (
   redirectTo: string,
-  prevState: LoginState,
+  prevState: LoginFormState,
   formData: FormData,
-) => {
-  const email = formData.get("email");
-  const password = formData.get("password");
+): Promise<LoginFormState> => {
+  const parsed = loginSchema.safeParse({
+    email: formData.get("email"),
+    password: formData.get("password"),
+  });
+
+  if (!parsed.success) {
+    return {
+      success: false,
+      message: "Please fix the errors below.",
+      errors: z.flattenError(parsed.error).fieldErrors,
+    };
+  }
+
+  const { email, password } = parsed.data;
 
   const payload = {
     email,
@@ -33,16 +47,14 @@ export const loginAction = async (
 
     cookieStore.set("accessToken", result.data.accessToken, {
       httpOnly: true,
-      secure: false,
-      sameSite: "none",
-      maxAge: 1000 * 60 * 60 * 24,
+      sameSite: "lax",
+      maxAge: 60 * 60 * 24,
     });
 
     cookieStore.set("refreshToken", result.data.refreshToken, {
       httpOnly: true,
-      secure: false,
-      sameSite: "none",
-      maxAge: 1000 * 60 * 60 * 24 * 7,
+      sameSite: "lax",
+      maxAge: 60 * 60 * 24 * 7,
     });
 
     const decodedToken = jwt.decode(result.data.accessToken) as JwtPayload;
@@ -68,24 +80,28 @@ export const loginAction = async (
 };
 
 export const registrationAction = async (
-  prevState: RegistrationState,
+  prevState: RegisterFormState,
   formData: FormData,
-) => {
-  const name = formData.get("name");
-  const email = formData.get("email");
-  const password = formData.get("password");
-  const phone = formData.get("phone");
-  const role = formData.get("role");
+): Promise<RegisterFormState> => {
+  const parsed = registerSchema.safeParse({
+    name: formData.get("name"),
+    email: formData.get("email"),
+    password: formData.get("password"),
+    phone: formData.get("phone"),
+    role: formData.get("role"),
+  });
 
-  const payload = {
-    name,
-    email,
-    password,
-    phone,
-    role,
-  };
+  if (!parsed.success) {
+    return {
+      success: false,
+      message: "Please fix the errors below.",
+      errors: z.flattenError(parsed.error).fieldErrors,
+    };
+  }
 
-  const res = await fetch(`${process.env.BACKEND_API_URL}/api/users/register`, {
+  const payload = parsed.data;
+
+  const res = await fetch(`${process.env.BACKEND_API_URL}/api/auth/register`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
