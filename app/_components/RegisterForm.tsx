@@ -54,6 +54,7 @@ const RegisterForm = () => {
   return (
     <motion.form
       action={action}
+      noValidate
       variants={container}
       initial="hidden"
       animate="show"

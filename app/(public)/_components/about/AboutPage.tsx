@@ -50,8 +50,8 @@ export default function AboutPage() {
   return (
     <main className="relative overflow-hidden">
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute left-0 top-0 h-72 w-72 rounded-full bg-primary/10 blur-3xl" />
-        <div className="absolute bottom-10 right-0 h-80 w-80 rounded-full bg-amber-500/10 blur-3xl" />
+        <div className="absolute -top-24 left-1/4 h-72 w-72 rounded-full bg-primary/10 blur-3xl" />
+        <div className="absolute bottom-0 right-1/4 h-72 w-72 rounded-full bg-amber-500/10 blur-3xl" />
       </div>
 
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">

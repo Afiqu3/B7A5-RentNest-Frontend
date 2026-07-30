@@ -157,6 +157,7 @@ export default function Banner() {
               width={1200}
               height={900}
               priority
+              loading="eager"
               className="h-auto w-full"
             />
           </motion.div>
