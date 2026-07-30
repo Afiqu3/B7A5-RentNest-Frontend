@@ -77,11 +77,9 @@ export default function Service() {
   return (
     <section className="relative overflow-hidden bg-muted/30 py-16 sm:py-20 lg:py-28">
       {/* decorative accent */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 -z-10 flex justify-center"
-      >
-        <div className="size-72 rounded-full bg-primary/5 blur-3xl" />
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+        <div className="absolute right-1/2 top-0 h-72 w-72 translate-x-1/2 rounded-full bg-primary/10 blur-3xl" />
+        <div className="absolute bottom-0 left-0 h-64 w-64 rounded-full bg-amber-500/10 blur-3xl" />
       </div>
 
       <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
