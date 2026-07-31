@@ -46,7 +46,10 @@ const LoginForm = () => {
             required
           />
           {errors?.email && (
-            <p id="email-error" className="text-xs font-medium text-destructive">
+            <p
+              id="email-error"
+              className="text-xs font-medium text-destructive"
+            >
               {errors.email[0]}
             </p>
           )}

@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { BadgeCheck, House, ShieldCheck, Sparkles } from "lucide-react";
 
-import LoginForm from "@/app/_components/LoginForm";
+import LoginForm from "@/app/(auth)/_components/LoginForm";
 
 export const metadata: Metadata = {
   title: "Log in · RentNest",
@@ -95,7 +95,9 @@ export default function LoginPage() {
             </div>
 
             <Suspense
-              fallback={<div className="h-72 animate-pulse rounded-xl bg-muted" />}
+              fallback={
+                <div className="h-72 animate-pulse rounded-xl bg-muted" />
+              }
             >
               <LoginForm />
             </Suspense>

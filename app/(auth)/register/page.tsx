@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { BadgeCheck, House, KeyRound, Sparkles } from "lucide-react";
 
-import RegisterForm from "@/app/_components/RegisterForm";
+import RegisterForm from "@/app/(auth)/_components/RegisterForm";
 
 export const metadata: Metadata = {
   title: "Create account · RentNest",

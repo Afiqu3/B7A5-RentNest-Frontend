@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
 import { AnimatePresence, motion } from "motion/react";
 import {
@@ -14,26 +14,11 @@ import {
   Sun,
   Moon,
   LogIn,
-  LogOut,
-  LayoutDashboard,
-  User as UserIcon,
-  UserRound,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { LinkItem, NavbarProps } from "@/lib/types";
-import { toast } from "sonner";
-import { logout } from "@/service/logout";
+import UserMenu from "./UserMenu";
 
 const NAV_ITEMS: LinkItem[] = [
   { label: "Home", href: "/", icon: House },
@@ -41,10 +26,6 @@ const NAV_ITEMS: LinkItem[] = [
   { label: "Properties", href: "/properties", icon: Building2 },
 ];
 
-const userMenuItems: LinkItem[] = [
-  { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-  { label: "Profile", href: "/profile", icon: UserIcon },
-];
 
 // function roleLinks(role: NavUser["role"]): LinkItem[] {
 //   switch (role) {
@@ -113,89 +94,6 @@ function ThemeToggle() {
       <Sun className="size-5 scale-100 rotate-0 transition-all duration-500 dark:scale-0 dark:-rotate-90" />
       <Moon className="absolute size-5 scale-0 rotate-90 transition-all duration-500 dark:scale-100 dark:rotate-0" />
     </Button>
-  );
-}
-
-function UserMenu({ user }: NavbarProps) {
-  const router = useRouter();
-
-  const handleUserMenuAction = async (href: string) => {
-    if (href === "/dashboard") {
-      if (user.data.role === "TENANT") {
-        router.push("/dashboard");
-      } else if (user.data.role === "LANDLORD") {
-        router.push("/landlord-dashboard");
-      } else if (user.data.role === "ADMIN") {
-        router.push("/admin-dashboard");
-      }
-
-      return;
-    }
-
-    if (href === "/logout") {
-      await logout();
-      toast.success("User Logged Out Successfully!");
-      router.push("/login");
-
-      return;
-    } else {
-      router.push(href);
-    }
-  };
-
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger
-        aria-label="Open account menu"
-        className="rounded-full outline-none transition-transform focus-visible:ring-[3px] focus-visible:ring-ring/50"
-      >
-        <Avatar className="size-9 border border-border">
-          <AvatarFallback className="bg-primary/10 text-primary">
-            <UserRound className="size-4.5" />
-          </AvatarFallback>
-        </Avatar>
-      </DropdownMenuTrigger>
-
-      <DropdownMenuContent align="end" className="w-60">
-        <DropdownMenuLabel className="flex flex-col gap-0.5">
-          <span className="truncate font-medium">{user?.data.name}</span>
-          <span className="truncate text-xs font-normal text-muted-foreground">
-            {user?.data.email}
-          </span>
-          <span className="mt-1 w-fit rounded-full bg-primary/10 px-2 py-0.5 text-[0.65rem] font-medium tracking-wide text-primary capitalize">
-            {user?.data.role}
-          </span>
-        </DropdownMenuLabel>
-
-        <DropdownMenuSeparator />
-
-        <DropdownMenuGroup>
-          {userMenuItems.map((item) => (
-            <DropdownMenuItem
-              key={item.href}
-              onClick={async () => {
-                await handleUserMenuAction(item.href);
-              }}
-            >
-              <item.icon />
-              <span>{item.label}</span>
-            </DropdownMenuItem>
-          ))}
-        </DropdownMenuGroup>
-
-        <DropdownMenuSeparator />
-
-        <DropdownMenuItem
-          variant="destructive"
-          onClick={async () => {
-            await handleUserMenuAction("/logout");
-          }}
-        >
-          <LogOut />
-          <span>Log out</span>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
   );
 }
 
