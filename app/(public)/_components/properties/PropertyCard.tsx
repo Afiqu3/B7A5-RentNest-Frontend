@@ -21,9 +21,9 @@ export type PropertyPreview = {
   location: string;
   address: string;
   rentAmount: number;
-  bedrooms: number;
-  bathrooms: number;
-  areaSquareFt?: number;
+  bedrooms?: number | null;
+  bathrooms?: number | null;
+  areaSquareFt?: number | null;
   amenities: string[];
   status: string;
   image: string;
@@ -31,6 +31,12 @@ export type PropertyPreview = {
 
 type PropertyCardProps = {
   property: PropertyPreview;
+  /** Where "View details" points. Defaults to the property's own page. */
+  href?: string;
+  /** Shows the "Featured" chip. Only used on curated lists. */
+  featured?: boolean;
+  /** Delay (seconds) for the entry animation, for staggering a grid. */
+  delay?: number;
 };
 
 const currencyFormatter = new Intl.NumberFormat("en-US", {
@@ -39,15 +45,20 @@ const currencyFormatter = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 0,
 });
 
-export default function PropertyCard({ property }: PropertyCardProps) {
+export default function PropertyCard({
+  property,
+  href = `/properties/${property.id}`,
+  featured = false,
+  delay = 0,
+}: PropertyCardProps) {
   return (
     <motion.article
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.4, ease: "easeOut" }}
+      transition={{ duration: 0.4, delay, ease: "easeOut" }}
       whileHover={{ y: -8, scale: 1.01 }}
-      className="group relative overflow-hidden rounded-[28px] border border-border bg-card/80 shadow-sm backdrop-blur-sm"
+      className="group relative flex flex-col overflow-hidden rounded-[28px] border border-border bg-card/80 shadow-sm backdrop-blur-sm"
     >
       <div className="relative h-48 overflow-hidden">
         <Image
@@ -63,9 +74,11 @@ export default function PropertyCard({ property }: PropertyCardProps) {
             <span className="rounded-full border border-border bg-background/80 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.24em] text-foreground/80">
               {property.status}
             </span>
-            <span className="rounded-full bg-primary/10 px-2.5 py-1 text-[11px] font-medium text-primary">
-              Featured
-            </span>
+            {featured && (
+              <span className="rounded-full bg-primary/10 px-2.5 py-1 text-[11px] font-medium text-primary">
+                Featured
+              </span>
+            )}
           </div>
 
           <div className="absolute bottom-5 left-5 right-5 rounded-[20px] border border-white/20 bg-background/80 p-4 shadow-lg backdrop-blur">
@@ -81,7 +94,7 @@ export default function PropertyCard({ property }: PropertyCardProps) {
         </div>
       </div>
 
-      <div className="p-5">
+      <div className="flex flex-1 flex-col p-5">
         <div className="flex items-start justify-between gap-3">
           <div>
             <p className="text-sm text-muted-foreground">{property.address}</p>
@@ -96,18 +109,18 @@ export default function PropertyCard({ property }: PropertyCardProps) {
           </div>
         </div>
 
-        <p className="mt-3 text-sm leading-6 text-muted-foreground">
+        <p className="mt-3 line-clamp-3 text-sm leading-6 text-muted-foreground">
           {property.description}
         </p>
 
         <div className="mt-4 flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-muted px-3 py-1">
             <BedDouble className="size-3.5 text-primary" />
-            {property.bedrooms} bed
+            {property.bedrooms ?? "—"} bed
           </span>
           <span className="inline-flex items-center gap-1.5 rounded-full bg-muted px-3 py-1">
             <Bath className="size-3.5 text-primary" />
-            {property.bathrooms} bath
+            {property.bathrooms ?? "—"} bath
           </span>
           <span className="inline-flex items-center gap-1.5 rounded-full bg-muted px-3 py-1">
             <Square className="size-3.5 text-primary" />
@@ -115,8 +128,8 @@ export default function PropertyCard({ property }: PropertyCardProps) {
           </span>
         </div>
 
-        <div className="mt-4 flex flex-wrap gap-2">
-          {property.amenities.map((amenity) => (
+        <div className="mt-4 mb-6 flex flex-wrap gap-2">
+          {property.amenities.slice(0, 4).map((amenity) => (
             <span
               key={amenity}
               className="rounded-full border border-border bg-background/70 px-2.5 py-1 text-xs font-medium text-muted-foreground"
@@ -124,14 +137,19 @@ export default function PropertyCard({ property }: PropertyCardProps) {
               {amenity}
             </span>
           ))}
+          {property.amenities.length > 4 && (
+            <span className="rounded-full border border-border bg-background/70 px-2.5 py-1 text-xs font-medium text-muted-foreground">
+              +{property.amenities.length - 4} more
+            </span>
+          )}
         </div>
 
-        <div className="mt-6 flex items-center justify-between border-t border-border/70 pt-4">
-          <p className="text-sm text-muted-foreground">
+        <div className="mt-auto flex items-center justify-between gap-3 border-t border-border/70 pt-4">
+          <p className="truncate text-sm text-muted-foreground">
             Perfect for modern living
           </p>
-          <Button asChild variant="outline" size="sm" className="group">
-            <Link href="/properties">
+          <Button asChild variant="outline" size="sm" className="group shrink-0">
+            <Link href={href}>
               View details
               <ArrowRight className="transition-transform duration-300 group-hover:translate-x-1" />
             </Link>

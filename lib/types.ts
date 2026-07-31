@@ -96,3 +96,79 @@ export type ProfileFormState =
       errors?: FieldErrors<"name" | "phone">;
       data?: unknown;
     };
+
+/* -------------------------------------------------------------------------- */
+/*                                 properties                                 */
+/* -------------------------------------------------------------------------- */
+
+/** Pagination envelope returned alongside every list endpoint. */
+export type ApiMeta = {
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+};
+
+export type ApiListResponse<T> = {
+  success: boolean;
+  statusCode: number;
+  message: string;
+  data: T[];
+  meta: ApiMeta;
+};
+
+export type PropertyCategory = {
+  id: string;
+  name: string;
+};
+
+export type PropertyLandlord = {
+  name: string;
+  phone: string;
+  email: string;
+};
+
+/**
+ * A property as returned by `GET /api/properties/available`.
+ *
+ * Fields the backend contract doesn't guarantee are optional so a missing
+ * column degrades to a fallback in the UI rather than crashing the page.
+ */
+export type Property = {
+  id: string;
+  title: string;
+  description: string;
+  location: string;
+  rentAmount: number;
+  amenities: string[];
+  status: string;
+  createdAt: string;
+  updatedAt?: string;
+  address?: string | null;
+  bedrooms?: number | null;
+  bathrooms?: number | null;
+  areaSquareFt?: number | null;
+  images?: string[] | null;
+  image?: string | null;
+  categoryId?: string | null;
+  category?: PropertyCategory | null;
+  landlord?: PropertyLandlord | null;
+};
+
+export type PropertySortBy = "createdAt" | "rentAmount";
+export type PropertySortOrder = "asc" | "desc";
+
+/** Normalised, fully-resolved query the properties list is rendered from. */
+export type PropertyQuery = {
+  searchTerm: string;
+  categoryId: string;
+  minPrice: string;
+  maxPrice: string;
+  sortBy: PropertySortBy;
+  sortOrder: PropertySortOrder;
+  page: number;
+  limit: number;
+};
+
+/** Raw `searchParams` as Next.js hands them to a page. */
+export type RawSearchParams = Record<string, string | string[] | undefined>;
