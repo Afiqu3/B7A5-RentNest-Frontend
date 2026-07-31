@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 import { AnimatePresence, motion } from "motion/react";
 import {
@@ -32,6 +32,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { LinkItem, NavbarProps } from "@/lib/types";
+import { toast } from "sonner";
+import { logout } from "@/service/logout";
 
 const NAV_ITEMS: LinkItem[] = [
   { label: "Home", href: "/", icon: House },
@@ -40,7 +42,7 @@ const NAV_ITEMS: LinkItem[] = [
 ];
 
 const userMenuItems: LinkItem[] = [
-  { label : "Dashboard", href : "/dashboard", icon : LayoutDashboard},
+  { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { label: "Profile", href: "/profile", icon: UserIcon },
 ];
 
@@ -115,6 +117,32 @@ function ThemeToggle() {
 }
 
 function UserMenu({ user }: NavbarProps) {
+  const router = useRouter();
+
+  const handleUserMenuAction = async (href: string) => {
+    if (href === "/dashboard") {
+      if (user.data.role === "TENANT") {
+        router.push("/dashboard");
+      } else if (user.data.role === "LANDLORD") {
+        router.push("/landlord-dashboard");
+      } else if (user.data.role === "ADMIN") {
+        router.push("/admin-dashboard");
+      }
+
+      return;
+    }
+
+    if (href === "/logout") {
+      await logout();
+      toast.success("User Logged Out Successfully!");
+      router.push("/login");
+
+      return;
+    } else {
+      router.push(href);
+    }
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
@@ -143,22 +171,28 @@ function UserMenu({ user }: NavbarProps) {
 
         <DropdownMenuGroup>
           {userMenuItems.map((item) => (
-            <DropdownMenuItem key={item.href} asChild>
-              <Link href={item.href}>
-                <item.icon />
-                {item.label}
-              </Link>
+            <DropdownMenuItem
+              key={item.href}
+              onClick={async () => {
+                await handleUserMenuAction(item.href);
+              }}
+            >
+              <item.icon />
+              <span>{item.label}</span>
             </DropdownMenuItem>
           ))}
         </DropdownMenuGroup>
 
         <DropdownMenuSeparator />
 
-        <DropdownMenuItem variant="destructive" asChild>
-          <Link href="/logout">
-            <LogOut />
-            Log out
-          </Link>
+        <DropdownMenuItem
+          variant="destructive"
+          onClick={async () => {
+            await handleUserMenuAction("/logout");
+          }}
+        >
+          <LogOut />
+          <span>Log out</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
