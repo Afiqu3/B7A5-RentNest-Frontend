@@ -16,12 +16,9 @@ import {
   LogIn,
   LogOut,
   LayoutDashboard,
-  Heart,
-  Settings,
   User as UserIcon,
   UserRound,
 } from "lucide-react";
-
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -34,44 +31,46 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { LinkItem, NavbarProps } from "@/lib/types";
 
-export type NavUser = {
-  name: string;
-  email: string;
-  role: "tenant" | "landlord" | "admin";
-};
-
-type NavItem = { label: string; href: string; icon: React.ElementType };
-
-const NAV_ITEMS: NavItem[] = [
+const NAV_ITEMS: LinkItem[] = [
   { label: "Home", href: "/", icon: House },
   { label: "About", href: "/about", icon: Info },
   { label: "Properties", href: "/properties", icon: Building2 },
 ];
 
-function roleLinks(role: NavUser["role"]): NavItem[] {
-  switch (role) {
-    case "landlord":
-      return [
-        { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-        { label: "My properties", href: "/dashboard/properties", icon: Building2 },
-        { label: "Rental requests", href: "/dashboard/requests", icon: Info },
-      ];
-    case "admin":
-      return [
-        { label: "Admin dashboard", href: "/admin", icon: LayoutDashboard },
-        { label: "Moderation", href: "/admin/moderation", icon: Info },
-        { label: "Users", href: "/admin/users", icon: UserIcon },
-      ];
-    case "tenant":
-    default:
-      return [
-        { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-        { label: "My requests", href: "/dashboard/requests", icon: Info },
-        { label: "Saved homes", href: "/dashboard/saved", icon: Heart },
-      ];
-  }
-}
+const userMenuItems: LinkItem[] = [
+  { label : "Dashboard", href : "/dashboard", icon : LayoutDashboard},
+  { label: "Profile", href: "/profile", icon: UserIcon },
+];
+
+// function roleLinks(role: NavUser["role"]): LinkItem[] {
+//   switch (role) {
+//     case "landlord":
+//       return [
+//         { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+//         {
+//           label: "My properties",
+//           href: "/dashboard/properties",
+//           icon: Building2,
+//         },
+//         { label: "Rental requests", href: "/dashboard/requests", icon: Info },
+//       ];
+//     case "admin":
+//       return [
+//         { label: "Admin dashboard", href: "/admin", icon: LayoutDashboard },
+//         { label: "Moderation", href: "/admin/moderation", icon: Info },
+//         { label: "Users", href: "/admin/users", icon: UserIcon },
+//       ];
+//     case "tenant":
+//     default:
+//       return [
+//         { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+//         { label: "My requests", href: "/dashboard/requests", icon: Info },
+//         { label: "Saved homes", href: "/dashboard/saved", icon: Heart },
+//       ];
+//   }
+// }
 
 function isActive(pathname: string, href: string) {
   return href === "/" ? pathname === "/" : pathname.startsWith(href);
@@ -115,32 +114,35 @@ function ThemeToggle() {
   );
 }
 
-function UserMenu({ user }: { user: NavUser }) {
+function UserMenu({ user }: NavbarProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
         aria-label="Open account menu"
-        className="rounded-full outline-none transition-transform hover:scale-105 focus-visible:ring-[3px] focus-visible:ring-ring/50"
+        className="rounded-full outline-none transition-transform focus-visible:ring-[3px] focus-visible:ring-ring/50"
       >
         <Avatar className="size-9 border border-border">
           <AvatarFallback className="bg-primary/10 text-primary">
-            <UserRound className="size-4.5" strokeWidth={2} />
+            <UserRound className="size-4.5" />
           </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
+
       <DropdownMenuContent align="end" className="w-60">
         <DropdownMenuLabel className="flex flex-col gap-0.5">
-          <span className="truncate font-medium">{user.name}</span>
+          <span className="truncate font-medium">{user?.data.name}</span>
           <span className="truncate text-xs font-normal text-muted-foreground">
-            {user.email}
+            {user?.data.email}
           </span>
           <span className="mt-1 w-fit rounded-full bg-primary/10 px-2 py-0.5 text-[0.65rem] font-medium tracking-wide text-primary capitalize">
-            {user.role}
+            {user?.data.role}
           </span>
         </DropdownMenuLabel>
+
         <DropdownMenuSeparator />
+
         <DropdownMenuGroup>
-          {roleLinks(user.role).map((item) => (
+          {userMenuItems.map((item) => (
             <DropdownMenuItem key={item.href} asChild>
               <Link href={item.href}>
                 <item.icon />
@@ -149,22 +151,9 @@ function UserMenu({ user }: { user: NavUser }) {
             </DropdownMenuItem>
           ))}
         </DropdownMenuGroup>
+
         <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuItem asChild>
-            <Link href="/profile">
-              <UserIcon />
-              Profile
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem asChild>
-            <Link href="/settings">
-              <Settings />
-              Settings
-            </Link>
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
+
         <DropdownMenuItem variant="destructive" asChild>
           <Link href="/logout">
             <LogOut />
@@ -176,7 +165,7 @@ function UserMenu({ user }: { user: NavUser }) {
   );
 }
 
-export default function Navbar({ user }: { user?: NavUser | null }) {
+export default function Navbar({ user }: NavbarProps) {
   const pathname = usePathname();
   const [open, setOpen] = React.useState(false);
   const closeMenu = () => setOpen(false);
@@ -215,7 +204,11 @@ export default function Navbar({ user }: { user?: NavUser | null }) {
                     <motion.span
                       layoutId="nav-underline"
                       className="absolute inset-x-3 -bottom-px h-0.5 rounded-full bg-primary"
-                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 380,
+                        damping: 30,
+                      }}
                     />
                   ) : null}
                 </Link>
@@ -227,7 +220,7 @@ export default function Navbar({ user }: { user?: NavUser | null }) {
         <div className="flex items-center gap-1.5 sm:gap-2">
           <ThemeToggle />
 
-          {user ? (
+          {user.success ? (
             <UserMenu user={user} />
           ) : (
             <Button asChild size="sm" className="hidden sm:inline-flex">
@@ -299,7 +292,7 @@ export default function Navbar({ user }: { user?: NavUser | null }) {
                 );
               })}
 
-              {!user ? (
+              {!user.success ? (
                 <motion.li
                   initial={{ opacity: 0, x: -12 }}
                   animate={{ opacity: 1, x: 0 }}

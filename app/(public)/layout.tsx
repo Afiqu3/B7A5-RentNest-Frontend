@@ -1,16 +1,13 @@
 import Footer from "@/components/shared/Footer";
 import Navbar from "@/components/shared/Navbar";
+import { getMe } from "@/service/getMe";
 
-const PublicLayout = ({ children }: { children: React.ReactNode }) => {
+const PublicLayout = async ({ children }: { children: React.ReactNode }) => {
+  const user = await getMe();
+
   return (
     <div>
-      <Navbar
-        // user={{
-        //   name: "Ayesha Rahman",
-        //   email: "ayesha@example.com",
-        //   role: "tenant",
-        // }}
-      />
+      <Navbar user={user} />
       {children}
       <Footer />
     </div>
