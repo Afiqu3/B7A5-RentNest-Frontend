@@ -41,22 +41,6 @@ export type RegistrationState = {
   };
 };
 
-// user: {
-//   success: true,
-//   statusCode: 200,
-//   message: 'User profile fetched successfully',
-//   data: {
-//     id: '7fa4c6e5-aaf1-4b21-b2a8-6f2554f81466',
-//     name: 'admin1',
-//     email: 'a1@mail.com',
-//     phone: '12345',
-//     activeStatus: 'ACTIVE',
-//     role: 'LANDLORD',
-//     createdAt: '2026-07-07T06:25:34.195Z',
-//     updatedAt: '2026-07-07T06:25:34.195Z'
-//   }
-// }
-
 export type IUser = {
   success: boolean;
   statusCode: number;
@@ -80,3 +64,35 @@ export type NavbarProps = {
 export type LinkItem = { label: string; href: string; icon: React.ElementType };
 
 export type Role = "TENANT" | "LANDLORD";
+
+/** Every role the platform recognises, including the admin role. */
+export type UserRole = Role | "ADMIN";
+
+/** The shape of `IUser["data"]`, narrowed so `role` is a known union. */
+export type UserProfile = Omit<IUser["data"], "role"> & { role: UserRole };
+
+/** A single entry in the dashboard sidebar. */
+export type SidebarNavItem = {
+  label: string;
+  href: string;
+  icon: React.ElementType;
+  /** Only highlight when the pathname matches exactly (used for index routes). */
+  exact?: boolean;
+  /** Optional count rendered as a badge on the right of the item. */
+  badge?: number;
+};
+
+/** A labelled section of sidebar entries. */
+export type SidebarNavGroup = {
+  label: string;
+  items: SidebarNavItem[];
+};
+
+export type ProfileFormState =
+  | false
+  | {
+      success: boolean;
+      message?: string;
+      errors?: FieldErrors<"name" | "phone">;
+      data?: unknown;
+    };

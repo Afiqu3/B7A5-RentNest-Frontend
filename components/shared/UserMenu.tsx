@@ -1,3 +1,5 @@
+"use client";
+
 import { LinkItem, NavbarProps } from "@/lib/types";
 import { logout } from "@/service/logout";
 import { useRouter } from "next/navigation";

@@ -25,5 +25,19 @@ export const registerSchema = z.object({
   role: z.enum(["TENANT", "LANDLORD"], { error: "Please select a role" }),
 });
 
+export const updateProfileSchema = z.object({
+  name: z.string().trim().min(2, "Name must be at least 2 characters"),
+  phone: z
+    .string()
+    .trim()
+    .regex(/^[+()\d\s-]+$/, "Enter a valid phone number")
+    // Count digits rather than characters so "++++++++++" is rejected.
+    .refine(
+      (value) => (value.match(/\d/g)?.length ?? 0) >= 10,
+      "Enter a valid phone number",
+    ),
+});
+
 export type LoginInput = z.infer<typeof loginSchema>;
 export type RegisterInput = z.infer<typeof registerSchema>;
+export type UpdateProfileInput = z.infer<typeof updateProfileSchema>;
