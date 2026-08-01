@@ -161,7 +161,6 @@ export type PropertySortOrder = "asc" | "desc";
 /** Normalised, fully-resolved query the properties list is rendered from. */
 export type PropertyQuery = {
   searchTerm: string;
-  categoryId: string;
   minPrice: string;
   maxPrice: string;
   sortBy: PropertySortBy;

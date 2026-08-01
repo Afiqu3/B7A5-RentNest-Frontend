@@ -1,11 +1,10 @@
 import Link from "next/link";
 import { MapPinOff, SearchX, TriangleAlert } from "lucide-react";
 
-import type { Property, RawSearchParams } from "@/lib/types";
+import type { Property } from "@/lib/types";
 import {
   buildPropertiesHref,
   getAvailableProperties,
-  getPropertyCategories,
   parsePropertyQuery,
 } from "@/service/properties";
 import { Button } from "@/components/ui/button";
@@ -49,20 +48,23 @@ function toPreview(property: Property): PropertyPreview {
   };
 }
 
-type PropertiesProps = {
-  /**
-   * The page's `searchParams` promise, awaited here rather than in the page so
-   * only this subtree is request-time work.
-   */
-  searchParams: Promise<RawSearchParams>;
-};
+// type PropertiesProps = {
+//   /**
+//    * The page's `searchParams` promise, awaited here rather than in the page so
+//    * only this subtree is request-time work.
+//    */
+//   searchParams: Promise<RawSearchParams>;
+// };
 
-export default async function Properties({ searchParams }: PropertiesProps) {
+export default async function Properties({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
   const query = parsePropertyQuery(await searchParams);
 
-  const [result, categories] = await Promise.all([
+  const [result] = await Promise.all([
     getAvailableProperties(query),
-    getPropertyCategories(),
   ]);
 
   const { data: properties, meta } = result;
@@ -75,7 +77,6 @@ export default async function Properties({ searchParams }: PropertiesProps) {
 
   const currentHref = buildPropertiesHref({
     searchTerm: query.searchTerm,
-    categoryId: query.categoryId,
     minPrice: query.minPrice,
     maxPrice: query.maxPrice,
     sort: `${query.sortBy}:${query.sortOrder}`,
@@ -85,10 +86,8 @@ export default async function Properties({ searchParams }: PropertiesProps) {
     <div className="space-y-6">
       <PropertyFilters
         query={query}
-        categories={categories}
         total={meta.total}
       />
-
       {failed ? (
         <EmptyState
           icon={TriangleAlert}

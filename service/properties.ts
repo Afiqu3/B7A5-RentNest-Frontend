@@ -1,7 +1,6 @@
 import type {
   ApiListResponse,
   Property,
-  PropertyCategory,
   PropertyQuery,
   PropertySortBy,
   PropertySortOrder,
@@ -14,7 +13,6 @@ import type {
 
 /** Change these two if the backend routes move. */
 export const PROPERTIES_ENDPOINT = "/api/properties/available";
-export const CATEGORIES_ENDPOINT = "/api/categories";
 
 export const PROPERTIES_PER_PAGE = 9;
 
@@ -68,7 +66,6 @@ export function parsePropertyQuery(params: RawSearchParams): PropertyQuery {
   // still typing into. The swap happens when the outbound request is built.
   return {
     searchTerm: first(params.searchTerm),
-    categoryId: first(params.categoryId),
     minPrice: toAmount(first(params.minPrice)),
     maxPrice: toAmount(first(params.maxPrice)),
     sortBy,
@@ -95,7 +92,6 @@ export function buildPropertySearchParams(
   const maxPrice = toAmount(query.maxPrice ?? "");
 
   if (searchTerm) params.set("searchTerm", searchTerm);
-  if (query.categoryId) params.set("categoryId", query.categoryId);
   if (minPrice) params.set("minPrice", minPrice);
   if (maxPrice) params.set("maxPrice", maxPrice);
   if (query.sort && query.sort !== DEFAULT_SORT) params.set("sort", query.sort);
@@ -156,7 +152,6 @@ export async function getAvailableProperties(
   const maxPrice = reversed ? query.minPrice : query.maxPrice;
 
   if (query.searchTerm) params.set("searchTerm", query.searchTerm);
-  if (query.categoryId) params.set("categoryId", query.categoryId);
   if (minPrice) params.set("minPrice", minPrice);
   if (maxPrice) params.set("maxPrice", maxPrice);
 
@@ -190,28 +185,3 @@ export async function getAvailableProperties(
   }
 }
 
-/**
- * Fetches the category filter options.
- *
- * Returns an empty array on any failure — the filter bar hides the category
- * control rather than blocking the whole listing.
- */
-export async function getPropertyCategories(): Promise<PropertyCategory[]> {
-  const url = `${process.env.BACKEND_API_URL}${CATEGORIES_ENDPOINT}`;
-
-  try {
-    const res = await fetch(url, {
-      next: { revalidate: 60 * 60, tags: ["property-categories"] },
-    });
-
-    if (!res.ok) return [];
-
-    const result = (await res.json()) as { data?: PropertyCategory[] };
-    const categories = Array.isArray(result.data) ? result.data : [];
-
-    return categories.filter((category) => category?.id && category?.name);
-  } catch (error) {
-    console.error("[categories] fetch failed:", error);
-    return [];
-  }
-}

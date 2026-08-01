@@ -54,7 +54,6 @@ export default function PropertyPagination({
   const hrefFor = (target: number) =>
     buildPropertiesHref({
       searchTerm: query.searchTerm,
-      categoryId: query.categoryId,
       minPrice: query.minPrice,
       maxPrice: query.maxPrice,
       sort: `${query.sortBy}:${query.sortOrder}`,

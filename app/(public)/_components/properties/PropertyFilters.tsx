@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import type { PropertyCategory, PropertyQuery } from "@/lib/types";
+import type { PropertyQuery } from "@/lib/types";
 import {
   buildPropertiesHref,
   DEFAULT_SORT,
@@ -29,7 +29,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const ALL_CATEGORIES = "all";
 const DEBOUNCE_MS = 450;
 
 /** The fields that are typed into, as opposed to picked from a menu. */
@@ -41,13 +40,11 @@ type Draft = {
 
 /** Non-draft changes that accompany a navigation. */
 type Extras = {
-  categoryId?: string;
   sort?: string;
 };
 
 type PropertyFiltersProps = {
   query: PropertyQuery;
-  categories: PropertyCategory[];
   /** Total matches for the current query, shown in the summary row. */
   total: number;
 };
@@ -91,7 +88,6 @@ function normalize(draft: Draft): Draft {
 
 export default function PropertyFilters({
   query,
-  categories,
   total,
 }: PropertyFiltersProps) {
   const router = useRouter();
@@ -140,14 +136,13 @@ export default function PropertyFilters({
       clearTimeout(timerRef.current);
       timerRef.current = null;
     }
-  }, [query.page, query.categoryId, query.sortBy, query.sortOrder]);
+  }, [query.page, query.sortBy, query.sortOrder]);
 
   const navigate = (next: Draft, extras: Extras = {}) => {
     startTransition(() => {
       router.replace(
         buildPropertiesHref({
           ...normalize(next),
-          categoryId: extras.categoryId ?? query.categoryId,
           sort: extras.sort ?? sort,
           // Any filter change invalidates the current offset.
           page: 1,
@@ -177,19 +172,13 @@ export default function PropertyFilters({
     }, DEBOUNCE_MS);
   };
 
-  const activeCategory = categories.find(
-    (category) => category.id === query.categoryId,
-  );
-
   const activeCount =
     (query.searchTerm ? 1 : 0) +
-    (query.categoryId ? 1 : 0) +
     (query.minPrice || query.maxPrice ? 1 : 0);
 
   const clearAll = () =>
     commit(
       { searchTerm: "", minPrice: "", maxPrice: "" },
-      { categoryId: "", sort: DEFAULT_SORT },
     );
 
   return (
@@ -289,35 +278,6 @@ export default function PropertyFilters({
             className="overflow-hidden"
           >
             <div className="mt-4 grid gap-4 border-t border-border/70 pt-4 sm:grid-cols-2 lg:grid-cols-3">
-              {categories.length > 0 && (
-                <div className="grid gap-2">
-                  <Label htmlFor="filter-category" className="text-xs">
-                    Category
-                  </Label>
-                  <Select
-                    value={query.categoryId || ALL_CATEGORIES}
-                    onValueChange={(value) =>
-                      commit(draft, {
-                        categoryId: value === ALL_CATEGORIES ? "" : value,
-                      })
-                    }
-                  >
-                    <SelectTrigger id="filter-category" className="h-10 w-full">
-                      <SelectValue placeholder="All categories" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value={ALL_CATEGORIES}>
-                        All categories
-                      </SelectItem>
-                      {categories.map((category) => (
-                        <SelectItem key={category.id} value={category.id}>
-                          {category.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              )}
 
               <div className="grid gap-2">
                 <Label htmlFor="filter-min-price" className="text-xs">
@@ -370,14 +330,6 @@ export default function PropertyFilters({
               key="search"
               label={`Location: ${query.searchTerm}`}
               onClear={() => commit({ ...draft, searchTerm: "" })}
-            />
-          )}
-
-          {activeCategory && (
-            <Chip
-              key="category"
-              label={activeCategory.name}
-              onClear={() => commit(draft, { categoryId: "" })}
             />
           )}
 

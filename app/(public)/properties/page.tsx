@@ -1,7 +1,6 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import { Sparkles } from "lucide-react";
-import type { RawSearchParams } from "@/lib/types";
 import Properties from "../_components/properties/Properties";
 import PropertiesSkeleton from "../_components/properties/PropertiesSkeleton";
 
@@ -11,11 +10,11 @@ export const metadata: Metadata = {
     "Search available rentals by location, filter by category and rent, and find your next home on RentNest.",
 };
 
-type PropertiesPageProps = {
-  searchParams: Promise<RawSearchParams>;
-};
-
-const PropertiesPage = ({ searchParams }: PropertiesPageProps) => {
+const PropertiesPage = ({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) => {
   return (
     <div className="relative overflow-hidden">
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
