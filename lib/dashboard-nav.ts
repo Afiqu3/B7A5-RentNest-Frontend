@@ -102,6 +102,12 @@ const ADMIN_NAV: SidebarNavGroup[] = [
         href: "/admin-dashboard/requests",
         icon: ClipboardList,
       },
+       {
+        label: "Overview",
+        href: "/admin-dashboard/overview",
+        icon: LayoutDashboard,
+        exact: true,
+      },
     ],
   },
   {
