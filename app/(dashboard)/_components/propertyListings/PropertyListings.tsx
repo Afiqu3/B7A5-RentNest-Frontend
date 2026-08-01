@@ -36,12 +36,12 @@ type PropertyListingItem = {
   areaSquareFt: number | null;
   amenities: string[];
   status: string;
-  category?: {
+  category: {
     name: string;
-  } | null;
-  landlord?: {
+  } ;
+  landlord: {
     name: string;
-  } | null;
+  };
 };
 
 type PropertyListingsProps = {
