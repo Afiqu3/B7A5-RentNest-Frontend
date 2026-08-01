@@ -27,12 +27,12 @@ export const ROLE_HOME: Record<UserRole, string> = {
 
 const TENANT_NAV: SidebarNavGroup[] = [
   {
-    label: "Renting",
+    label: "Platform",
     items: [
       {
-        label: "Overview",
+        label: "My Profile",
         href: "/dashboard",
-        icon: LayoutDashboard,
+        icon: UserRound,
         exact: true,
       },
       { label: "Browse Properties", href: "/properties", icon: Search },
