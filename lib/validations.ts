@@ -38,6 +38,15 @@ export const updateProfileSchema = z.object({
     ),
 });
 
+export const categorySchema = z.object({
+  name: z
+    .string()
+    .trim()
+    .min(2, "Category name must be at least 2 characters")
+    .max(50, "Category name must be at most 50 characters"),
+});
+
 export type LoginInput = z.infer<typeof loginSchema>;
 export type RegisterInput = z.infer<typeof registerSchema>;
 export type UpdateProfileInput = z.infer<typeof updateProfileSchema>;
+export type CategoryInput = z.infer<typeof categorySchema>;

@@ -7,6 +7,7 @@ import {
   MessageSquare,
   PlusCircle,
   Search,
+  Tag,
   UserRound,
   Users,
   Wallet,
@@ -96,13 +97,17 @@ const ADMIN_NAV: SidebarNavGroup[] = [
         icon: UserRound,
         exact: true,
       },
-      { label: "Listings", href: "/admin-dashboard/propertyListings", icon: Building2 },
+      {
+        label: "Listings",
+        href: "/admin-dashboard/propertyListings",
+        icon: Building2,
+      },
       {
         label: "Rental Requests",
         href: "/admin-dashboard/requests",
         icon: ClipboardList,
       },
-       {
+      {
         label: "Overview",
         href: "/admin-dashboard/overview",
         icon: LayoutDashboard,
@@ -114,6 +119,7 @@ const ADMIN_NAV: SidebarNavGroup[] = [
     label: "Moderation",
     items: [
       { label: "Users", href: "/admin-dashboard/users", icon: Users },
+      { label: "Category", href: "/admin-dashboard/categories", icon: Tag },
     ],
   },
 ];
