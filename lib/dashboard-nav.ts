@@ -91,23 +91,23 @@ const ADMIN_NAV: SidebarNavGroup[] = [
     label: "Platform",
     items: [
       {
-        label: "Overview",
+        label: "My Profile",
         href: "/admin-dashboard",
-        icon: LayoutDashboard,
+        icon: UserRound,
         exact: true,
       },
-      { label: "Users", href: "/admin-dashboard/users", icon: Users },
-      { label: "Listings", href: "/admin-dashboard/listings", icon: Building2 },
-    ],
-  },
-  {
-    label: "Moderation",
-    items: [
+      { label: "Listings", href: "/admin-dashboard/propertyListings", icon: Building2 },
       {
         label: "Rental Requests",
         href: "/admin-dashboard/requests",
         icon: ClipboardList,
       },
+    ],
+  },
+  {
+    label: "Moderation",
+    items: [
+      { label: "Users", href: "/admin-dashboard/users", icon: Users },
     ],
   },
 ];
@@ -132,5 +132,5 @@ const NAV_BY_ROLE: Record<UserRole, SidebarNavGroup[]> = {
  */
 export function getNavGroups(role: string | undefined): SidebarNavGroup[] {
   const groups = NAV_BY_ROLE[role as UserRole] ?? TENANT_NAV;
-  return [...groups, COMMON_NAV];
+  return [...groups];
 }

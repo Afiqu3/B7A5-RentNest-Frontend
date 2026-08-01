@@ -21,6 +21,7 @@ type PropertyPreview = {
   amenities: string[];
   status: string;
   image: string;
+  category: string;
 };
 
 const featuredProperties: PropertyPreview[] = [
@@ -38,6 +39,7 @@ const featuredProperties: PropertyPreview[] = [
     amenities: ["Gym", "Concierge", "Parking"],
     status: "Available",
     image: "/images/banner-home.svg",
+    category: "House",
   },
   {
     id: "prop-2",
@@ -53,6 +55,7 @@ const featuredProperties: PropertyPreview[] = [
     amenities: ["Pet Friendly", "Backyard", "Laundry"],
     status: "Available",
     image: "/images/banner-home.svg",
+    category: "House",
   },
   {
     id: "prop-3",
@@ -60,7 +63,7 @@ const featuredProperties: PropertyPreview[] = [
     description:
       "An elegant riverside home with smart-home features, a chef-ready kitchen, and generous outdoor space.",
     location: "Riverfront District",
-    address: "89 Lakeview Terrace",
+    address: "89 Lake-view Terrace",
     rentAmount: 3120,
     bedrooms: 4,
     bathrooms: 3,
@@ -68,6 +71,7 @@ const featuredProperties: PropertyPreview[] = [
     amenities: ["Waterfront", "Fireplace", "Terrace"],
     status: "Available",
     image: "/images/banner-home.svg",
+    category: "House",
   },
 ];
 

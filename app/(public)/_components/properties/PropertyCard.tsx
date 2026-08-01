@@ -27,6 +27,7 @@ export type PropertyPreview = {
   amenities: string[];
   status: string;
   image: string;
+  category: string;
 };
 
 type PropertyCardProps = {
@@ -109,10 +110,6 @@ export default function PropertyCard({
           </div>
         </div>
 
-        <p className="mt-3 line-clamp-3 text-sm leading-6 text-muted-foreground">
-          {property.description}
-        </p>
-
         <div className="mt-4 flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-muted px-3 py-1">
             <BedDouble className="size-3.5 text-primary" />
@@ -124,7 +121,11 @@ export default function PropertyCard({
           </span>
           <span className="inline-flex items-center gap-1.5 rounded-full bg-muted px-3 py-1">
             <Square className="size-3.5 text-primary" />
-            {property.areaSquareFt?.toLocaleString() ?? "Flexible"} sq ft
+            {property.areaSquareFt?.toLocaleString() ?? "N/A"} sq ft
+          </span>
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-muted px-3 py-1">
+            <Square className="size-3.5 text-primary" />
+            {property.category}
           </span>
         </div>
 

@@ -37,14 +37,15 @@ function toPreview(property: Property): PropertyPreview {
     title: property.title,
     description: property.description,
     location: property.location,
-    address: property.address || property.category?.name || property.location,
+    address: property.address,
     rentAmount: property.rentAmount,
     bedrooms: property.bedrooms ?? null,
     bathrooms: property.bathrooms ?? null,
     areaSquareFt: property.areaSquareFt ?? null,
     amenities: Array.isArray(property.amenities) ? property.amenities : [],
     status: property.status,
-    image: safeImage(property.images?.[0] ?? property.image),
+    image: safeImage(property.image ?? property.image),
+    category: property.category.name,
   };
 }
 
@@ -63,9 +64,7 @@ export default async function Properties({
 }) {
   const query = parsePropertyQuery(await searchParams);
 
-  const [result] = await Promise.all([
-    getAvailableProperties(query),
-  ]);
+  const [result] = await Promise.all([getAvailableProperties(query)]);
 
   const { data: properties, meta } = result;
   const failed = !result.success;
@@ -84,10 +83,7 @@ export default async function Properties({
 
   return (
     <div className="space-y-6">
-      <PropertyFilters
-        query={query}
-        total={meta.total}
-      />
+      <PropertyFilters query={query} total={meta.total} />
       {failed ? (
         <EmptyState
           icon={TriangleAlert}

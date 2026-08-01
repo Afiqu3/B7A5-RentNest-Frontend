@@ -118,7 +118,6 @@ export type ApiListResponse<T> = {
 };
 
 export type PropertyCategory = {
-  id: string;
   name: string;
 };
 
@@ -144,14 +143,13 @@ export type Property = {
   status: string;
   createdAt: string;
   updatedAt?: string;
-  address?: string | null;
+  address: string;
   bedrooms?: number | null;
   bathrooms?: number | null;
   areaSquareFt?: number | null;
-  images?: string[] | null;
   image?: string | null;
   categoryId?: string | null;
-  category?: PropertyCategory | null;
+  category: PropertyCategory;
   landlord?: PropertyLandlord | null;
 };
 
