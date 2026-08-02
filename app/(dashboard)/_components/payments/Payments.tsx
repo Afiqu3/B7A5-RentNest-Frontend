@@ -50,12 +50,15 @@ function formatDate(value: string) {
   }).format(new Date(value));
 }
 
-function formatStatus(status: string) {
-  return status
-    .replace(/_/g, " ")
-    .toLowerCase()
-    .replace(/\b\w/g, (char) => char.toUpperCase());
-}
+const statusStyles: Record<string, string> = {
+  PENDING: "border-amber-500/20 bg-amber-500/10 text-amber-600",
+  APPROVED: "border-sky-500/20 bg-sky-500/10 text-sky-600",
+  ACTIVE: "border-emerald-500/20 bg-emerald-500/10 text-emerald-600",
+  REJECTED: "border-rose-500/20 bg-rose-500/10 text-rose-600",
+  COMPLETED: "border-slate-500/20 bg-slate-500/10 text-slate-600",
+  PAID: "border-emerald-500/20 bg-emerald-500/10 text-emerald-600",
+  FAILED: "border-rose-500/20 bg-rose-500/10 text-rose-600",
+};
 
 const Payments = ({ payments }: PaymentsProps) => {
   return (
@@ -117,9 +120,11 @@ const Payments = ({ payments }: PaymentsProps) => {
             >
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div className="space-y-1">
-                  <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary">
+                  <div
+                    className={`inline-flex items-center gap-2 rounded-full border px-2.5 py-1 text-xs font-medium ${statusStyles[payment.status] ?? "border-border bg-muted text-muted-foreground"}`}
+                  >
                     <BadgeCheck className="size-3.5" />
-                    {formatStatus(payment.status)}
+                    {payment.status}
                   </div>
                   <h2 className="font-heading text-lg font-semibold text-foreground">
                     {payment.rentalRequest.property.title}
@@ -175,8 +180,10 @@ const Payments = ({ payments }: PaymentsProps) => {
                     <p className="text-sm text-muted-foreground">
                       Rental request status
                     </p>
-                    <p className="mt-1 font-medium text-foreground">
-                      {formatStatus(payment.rentalRequest.status)}
+                    <p
+                      className={`inline-flex rounded-full border px-2.5 py-1 text-xs font-semibold ${statusStyles[payment.rentalRequest.status] ?? "bg-muted text-muted-foreground border-border"}`}
+                    >
+                      {payment.rentalRequest.status}
                     </p>
                   </div>
                   <div className="text-right">

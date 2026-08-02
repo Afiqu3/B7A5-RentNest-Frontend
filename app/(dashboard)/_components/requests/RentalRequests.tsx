@@ -60,7 +60,8 @@ type RentalRequestsProps = {
 
 const statusStyles: Record<string, string> = {
   ACTIVE: "bg-emerald-500/10 text-emerald-600 border-emerald-500/20",
-  COMPLETED: "bg-sky-500/10 text-sky-600 border-sky-500/20",
+  APPROVED: "bg-sky-500/10 text-sky-600 border-sky-500/20",
+  COMPLETED: "bg-slate-500/10 text-slate-600 border-slate-500/20",
   PENDING: "bg-amber-500/10 text-amber-600 border-amber-500/20",
   REJECTED: "bg-rose-500/10 text-rose-600 border-rose-500/20",
 };

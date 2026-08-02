@@ -106,7 +106,7 @@ const Overview = ({ stats }: OverviewProps) => {
     { name: "Completed", value: stats.totalCompletedRentalRequests },
   ];
 
-  const chartColors = ["#0f766e", "#2563eb", "#f59e0b", "#dc2626", "#008000"];
+  const chartColors = ["#f59e0b", "#2563eb", "#10b981", "#dc2626", "#64748b"];
 
   return (
     <motion.div
