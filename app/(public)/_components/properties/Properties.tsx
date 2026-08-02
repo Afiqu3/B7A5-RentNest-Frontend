@@ -12,7 +12,7 @@ import PropertyCard, { type PropertyPreview } from "./PropertyCard";
 import PropertyFilters from "./PropertyFilters";
 import PropertyPagination from "./PropertyPagination";
 
-const FALLBACK_IMAGE = "/images/banner-home.svg";
+// const FALLBACK_IMAGE = "/images/banner-home.svg";
 
 /**
  * `next/image` throws on any host missing from `images.remotePatterns` in
@@ -22,10 +22,10 @@ const FALLBACK_IMAGE = "/images/banner-home.svg";
  *
  * Once `remotePatterns` includes your CDN, this can just return `src`.
  */
-function safeImage(src: string | null | undefined) {
-  if (!src) return FALLBACK_IMAGE;
-  return src.startsWith("/") ? src : FALLBACK_IMAGE;
-}
+// function safeImage(src: string | null | undefined) {
+//   if (!src) return FALLBACK_IMAGE;
+//   return src.startsWith("/") ? src : FALLBACK_IMAGE;
+// }
 
 /**
  * Maps an API property onto the shape `PropertyCard` renders, filling in
@@ -44,7 +44,7 @@ function toPreview(property: Property): PropertyPreview {
     areaSquareFt: property.areaSquareFt ?? null,
     amenities: Array.isArray(property.amenities) ? property.amenities : [],
     status: property.status,
-    image: safeImage(property.image ?? property.image),
+    image: property.image,
     category: property.category.name,
   };
 }

@@ -1,8 +1,27 @@
+import { Property } from "@/lib/types";
 import PropertyCard, { type PropertyPreview } from "./PropertyCard";
 
 type LatestPropertyListProps = {
-  properties: PropertyPreview[];
+  properties: Property[];
 };
+
+function toPreview(property: Property): PropertyPreview {
+  return {
+    id: property.id,
+    title: property.title,
+    description: property.description,
+    location: property.location,
+    address: property.address,
+    rentAmount: property.rentAmount,
+    bedrooms: property.bedrooms ?? null,
+    bathrooms: property.bathrooms ?? null,
+    areaSquareFt: property.areaSquareFt ?? null,
+    amenities: Array.isArray(property.amenities) ? property.amenities : [],
+    status: property.status,
+    image: property.image,
+    category: property.category.name,
+  };
+}
 
 export default function LatestPropertyList({
   properties,
@@ -23,7 +42,11 @@ export default function LatestPropertyList({
   return (
     <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
       {properties.map((property) => (
-        <PropertyCard key={property.id} property={property} featured />
+        <PropertyCard
+          key={property.id}
+          property={toPreview(property)}
+          featured
+        />
       ))}
     </div>
   );

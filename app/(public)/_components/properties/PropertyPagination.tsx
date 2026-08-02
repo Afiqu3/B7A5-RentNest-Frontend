@@ -49,7 +49,7 @@ export default function PropertyPagination({
 }: PropertyPaginationProps) {
   const { page, totalPages } = meta;
 
-  if (totalPages <= 1) return null;
+  // if (totalPages <= 1) return null;
 
   const hrefFor = (target: number) =>
     buildPropertiesHref({

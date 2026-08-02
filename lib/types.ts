@@ -147,7 +147,7 @@ export type Property = {
   bedrooms?: number | null;
   bathrooms?: number | null;
   areaSquareFt?: number | null;
-  image?: string | null;
+  image: string;
   categoryId?: string | null;
   category: PropertyCategory;
   landlord?: PropertyLandlord | null;

@@ -3,13 +3,11 @@ import {
   ClipboardList,
   CreditCard,
   LayoutDashboard,
-  MessageSquare,
   PlusCircle,
   Search,
   Tag,
   UserRound,
   Users,
-  Wallet,
 } from "lucide-react";
 
 import type { SidebarNavGroup, UserRole } from "@/lib/types";
@@ -75,12 +73,6 @@ const LANDLORD_NAV: SidebarNavGroup[] = [
         href: "/landlord-dashboard/requests",
         icon: ClipboardList,
       },
-      {
-        label: "Messages",
-        href: "/landlord-dashboard/messages",
-        icon: MessageSquare,
-      },
-      { label: "Earnings", href: "/landlord-dashboard/earnings", icon: Wallet },
     ],
   },
 ];

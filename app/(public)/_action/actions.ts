@@ -65,3 +65,12 @@ const MOCK_REVIEWS: Review[] = [
       "I loved how transparent the pricing was, no hidden fees at checkout. Scheduling a viewing took less than a minute.",
   },
 ];
+
+export const getLatestProperties = async () => {
+  const res = await fetch(`${process.env.BACKEND_API_URL}/api/properties/available?limit=3&createdAt=desc`, {
+    cache: "no-cache",
+  });
+
+  const result = await res.json();
+  return result.data;
+}
