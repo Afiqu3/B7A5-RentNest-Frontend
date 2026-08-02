@@ -1,9 +1,20 @@
-import React from 'react'
+import { getMe } from "@/service/getMe";
+import { Metadata } from "next";
+import MyProfile from "../_components/MyProfile";
 
-const LandlordDashboardPage = () => {
+export const metadata: Metadata = {
+  title: "My Profile | RentNest",
+  description: "View and update your RentNest account details.",
+};
+
+const LandlordDashboardPage = async () => {
+  const user = await getMe();
+
   return (
-    <div>LandlordPage</div>
-  )
-}
+    <div>
+      <MyProfile user={user} />
+    </div>
+  );
+};
 
 export default LandlordDashboardPage;

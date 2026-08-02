@@ -3,7 +3,6 @@ import {
   ClipboardList,
   CreditCard,
   LayoutDashboard,
-  PlusCircle,
   Search,
   Tag,
   UserRound,
@@ -47,21 +46,16 @@ const LANDLORD_NAV: SidebarNavGroup[] = [
   {
     label: "Portfolio",
     items: [
-      {
-        label: "Overview",
+     {
+        label: "My Profile",
         href: "/landlord-dashboard",
-        icon: LayoutDashboard,
+        icon: UserRound,
         exact: true,
       },
       {
         label: "My Listings",
         href: "/landlord-dashboard/listings",
         icon: Building2,
-      },
-      {
-        label: "Add Property",
-        href: "/landlord-dashboard/listings/new",
-        icon: PlusCircle,
       },
     ],
   },

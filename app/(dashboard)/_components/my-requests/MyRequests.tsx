@@ -148,7 +148,7 @@ const MyRequests = ({ requests }: MyRequestsProps) => {
       formData.set("rentalRequestId", selectedRequest.id);
 
       const result = await createReview(
-        { success: true, statusCode: 200, message: "", data: {} },
+        { success: false, statusCode: 0, message: "", data: {} },
         formData,
       );
 

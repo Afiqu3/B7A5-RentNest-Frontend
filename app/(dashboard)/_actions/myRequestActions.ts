@@ -4,7 +4,7 @@
 import { isAccessTokenExist } from "@/service/refreshToken";
 
 type ReviewState = {
-  success: true;
+  success: boolean;
   statusCode: number;
   message: string;
   data: Record<string, any>;
@@ -67,21 +67,44 @@ export const createReview = async (
   prevState: ReviewState,
   formData: FormData,
 ) => {
+  void prevState;
+
+  const rentalRequestId = formData.get("rentalRequestId")?.toString();
+
+  if (!rentalRequestId) {
+    return {
+      success: false,
+      statusCode: 400,
+      message: "A rental request is required.",
+      data: {},
+    };
+  }
+
   const payload = {
     rating: Number(formData.get("rating")),
-    comment: String(formData.get("comment")),
+    comment: String(formData.get("comment") || ""),
   };
 
   const accessToken = await isAccessTokenExist();
 
-  const res = await fetch(`${process.env.BACKEND_API_URL}/api/reviews`, {
-    method: "POST",
-    headers: {
-      Cookie: `accessToken=${accessToken}`,
+  const res = await fetch(
+    `${process.env.BACKEND_API_URL}/api/reviews/${rentalRequestId}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: `accessToken=${accessToken}`,
+      },
+      body: JSON.stringify(payload),
     },
-    body: JSON.stringify(payload),
-  });
+  );
 
-  const result = await res.json();
-  return result;
+  const result = await res.json().catch(() => ({}));
+
+  return {
+    success: Boolean(result?.success),
+    statusCode: result?.statusCode ?? res.status,
+    message: result?.message ?? "Unable to submit your review right now.",
+    data: result?.data ?? {},
+  };
 };
