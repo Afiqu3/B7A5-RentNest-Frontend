@@ -3,6 +3,7 @@ import {
   ClipboardList,
   CreditCard,
   LayoutDashboard,
+  MessageCircle,
   Search,
   Tag,
   UserRound,
@@ -58,6 +59,12 @@ const LANDLORD_NAV: SidebarNavGroup[] = [
         icon: UserRound,
         exact: true,
       },
+      {
+        label: "Reviews",
+        href: "/landlord-dashboard/reviews",
+        icon: MessageCircle,
+        exact: true,
+      },
     ],
   },
   {
@@ -72,7 +79,7 @@ const LANDLORD_NAV: SidebarNavGroup[] = [
         label: "Rental Requests",
         href: "/landlord-dashboard/landlord-requests",
         icon: ClipboardList,
-      }, 
+      },
     ],
   },
 ];
