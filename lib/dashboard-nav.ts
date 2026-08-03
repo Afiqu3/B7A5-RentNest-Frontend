@@ -46,22 +46,22 @@ const LANDLORD_NAV: SidebarNavGroup[] = [
   {
     label: "Portfolio",
     items: [
-     {
+      {
         label: "My Profile",
         href: "/landlord-dashboard",
         icon: UserRound,
         exact: true,
-      },
-      {
-        label: "My Listings",
-        href: "/landlord-dashboard/listings",
-        icon: Building2,
       },
     ],
   },
   {
     label: "Operations",
     items: [
+      {
+        label: "My Listings",
+        href: "/landlord-dashboard/listings",
+        icon: Building2,
+      },
       {
         label: "Rental Requests",
         href: "/landlord-dashboard/requests",

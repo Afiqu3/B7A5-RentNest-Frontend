@@ -1,3 +1,5 @@
+"use server";
+
 import { isAccessTokenExist } from "@/service/refreshToken";
 
 export const getPaymentHistory = async () => {
