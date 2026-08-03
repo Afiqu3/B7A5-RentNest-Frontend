@@ -34,6 +34,7 @@ export const getPaymentUrl = async (rentalId: string) => {
   const res = await fetch(
     `${process.env.BACKEND_API_URL}/api/payments/checkout/${rentalId}`,
     {
+      method: "POST",
       headers: {
         Cookie: `accessToken=${accessToken}`,
       },
@@ -43,7 +44,7 @@ export const getPaymentUrl = async (rentalId: string) => {
 
   const result = await res.json();
 
-  return result.transactionResult;
+  return result;
 };
 
 export const isReviewed = async (rentalId: string) => {

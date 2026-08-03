@@ -108,9 +108,10 @@ const MyRequests = ({ requests }: MyRequestsProps) => {
 
   const handlePayNow = async (rentalId: string) => {
     try {
-      const url = await getPaymentUrl(rentalId);
+      const result = await getPaymentUrl(rentalId);
+      const url = result.data.transactionResult ;
       if (url) {
-        window.open(url, "_blank", "noopener,noreferrer");
+        window.open(url, '_blank', 'noopener,noreferrer');
       }
     } catch {
       toast.error("Unable to open payment link right now.");

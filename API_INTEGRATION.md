@@ -77,7 +77,7 @@ Rental request payloads are validated with `rentalRequestSchema`
 
 | Method | Endpoint | Server function | Consumed by |
 | --- | --- | --- | --- |
-| GET | `/api/payments/checkout/:rentalId` | `getPaymentUrl` — `_actions/myRequestActions.ts` | `MyRequests` — redirects to the payment gateway |
+| POST | `/api/payments/checkout/:rentalId` | `getPaymentUrl` — `_actions/myRequestActions.ts` | `MyRequests` — redirects to the payment gateway |
 | GET | `/api/payments/history` | `getPaymentHistory` — `_actions/paymentActions.ts` | Tenant `Payments` |
 
 After the gateway redirects back, `/dashboard/payments/success` and
@@ -90,7 +90,17 @@ After the gateway redirects back, `/dashboard/payments/success` and
 | Method | Endpoint | Server function | Consumed by |
 | --- | --- | --- | --- |
 | GET | `/api/reviews/:rentalId/exists` | `isReviewed` — `_actions/myRequestActions.ts` | `MyRequests` (hide the review form once submitted) |
-| POST | `/api/reviews/:rentalId` | `createReview` — `myRequestActions.ts` | `MyRequests` (leave a review) |
+| POST | `/api/reviews/:rentalId` | `createReview` — `_actions/myRequestActions.ts` | `MyRequests` (leave a review) |
+| GET | `/api/reviews/landlord-reviews` | `getAllCategory` — `_actions/reviewsActions.ts` | Landlord `Reviews` |
+
+---
+
+## Landlord dashboard
+
+| Method | Endpoint | Server function | Consumed by |
+| --- | --- | --- | --- |
+| GET | `/api/auth/landlord-overview` | `getAllCategory` — `_actions/landlordOverviewActions.ts` | Landlord `Overview` |
+| GET | `/api/reviews/landlord-reviews` | `getAllCategory` — `_actions/reviewsActions.ts` | Landlord `Reviews` |
 
 ---
 
