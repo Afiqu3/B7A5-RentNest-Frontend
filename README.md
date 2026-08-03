@@ -149,3 +149,9 @@ The sidebar is role-driven via `lib/dashboard-nav.ts`.
 
 - [`API_INTEGRATION.md`](./API_INTEGRATION.md) — every backend endpoint mapped to
   the server function and UI that consumes it.
+
+---
+
+## Live API
+
+- Production base URL: https://rentnest-client-beta.vercel.app

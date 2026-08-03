@@ -12,6 +12,8 @@ import {
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import image from "@/public/images/banner-home.svg";
+
 
 const container: Variants = {
   hidden: {},
@@ -152,7 +154,7 @@ export default function Banner() {
             className="relative overflow-hidden rounded-3xl border border-border bg-linear-to-br from-amber-100/60 to-muted/40 shadow-xl ring-1 ring-black/5 dark:from-primary/10 dark:to-muted/20"
           >
             <Image
-              src="/images/banner-home.svg"
+              src={image}
               alt="Cozy rental homes at golden hour"
               width={1200}
               height={900}
