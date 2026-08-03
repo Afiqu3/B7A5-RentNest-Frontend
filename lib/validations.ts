@@ -203,6 +203,48 @@ export const propertySchema = z.object({
 export type PropertyInput = z.infer<typeof propertySchema>;
 export type PropertyField = keyof PropertyInput;
 
+/* -------------------------------------------------------------------------- */
+/*                               rental request                              */
+/* -------------------------------------------------------------------------- */
+
+/** Midnight today, in local time — the earliest a tenant can move in. */
+function startOfToday() {
+  const now = new Date();
+  now.setHours(0, 0, 0, 0);
+  return now;
+}
+
+export const rentalRequestSchema = z.object({
+  moveInDate: z.preprocess(
+    emptyToUndefined,
+    z
+      .string({ error: "Choose a move-in date" })
+      .refine((value) => !Number.isNaN(Date.parse(value)), {
+        error: "Choose a valid date",
+      })
+      .refine(
+        (value) => {
+          const picked = new Date(value);
+          picked.setHours(0, 0, 0, 0);
+          return picked.getTime() >= startOfToday().getTime();
+        },
+        { error: "Move-in date can't be in the past" },
+      ),
+  ),
+
+  durationMonths: z.preprocess(
+    toNumber,
+    z
+      .number({ error: "Enter how many months" })
+      .int("Use whole months")
+      .min(1, "At least 1 month")
+      .max(24, "Up to 24 months at a time"),
+  ),
+});
+
+export type RentalRequestInput = z.infer<typeof rentalRequestSchema>;
+export type RentalRequestField = keyof RentalRequestInput;
+
 export type LoginInput = z.infer<typeof loginSchema>;
 export type RegisterInput = z.infer<typeof registerSchema>;
 export type UpdateProfileInput = z.infer<typeof updateProfileSchema>;
