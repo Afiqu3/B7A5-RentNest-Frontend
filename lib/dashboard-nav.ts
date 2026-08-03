@@ -70,7 +70,7 @@ const LANDLORD_NAV: SidebarNavGroup[] = [
       },
       {
         label: "Rental Requests",
-        href: "/landlord-dashboard/requests",
+        href: "/landlord-dashboard/landlord-requests",
         icon: ClipboardList,
       }, 
     ],
