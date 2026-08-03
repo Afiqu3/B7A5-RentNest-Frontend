@@ -173,10 +173,6 @@ const ListingCard = ({
           </div>
         )}
 
-        <p className="line-clamp-2 text-sm leading-6 text-muted-foreground">
-          {listing.description}
-        </p>
-
         <div className="mt-auto space-y-3 pt-1">
           <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
             <CalendarDays className="size-3.5" />

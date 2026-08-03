@@ -47,6 +47,12 @@ const LANDLORD_NAV: SidebarNavGroup[] = [
     label: "Portfolio",
     items: [
       {
+        label: "Overview",
+        href: "/landlord-dashboard/landlord-overview",
+        icon: LayoutDashboard,
+        exact: true,
+      },
+      {
         label: "My Profile",
         href: "/landlord-dashboard",
         icon: UserRound,
@@ -66,7 +72,7 @@ const LANDLORD_NAV: SidebarNavGroup[] = [
         label: "Rental Requests",
         href: "/landlord-dashboard/requests",
         icon: ClipboardList,
-      },
+      }, 
     ],
   },
 ];
@@ -82,6 +88,12 @@ const ADMIN_NAV: SidebarNavGroup[] = [
         exact: true,
       },
       {
+        label: "Overview",
+        href: "/admin-dashboard/overview",
+        icon: LayoutDashboard,
+        exact: true,
+      },
+      {
         label: "Listings",
         href: "/admin-dashboard/propertyListings",
         icon: Building2,
@@ -90,12 +102,6 @@ const ADMIN_NAV: SidebarNavGroup[] = [
         label: "Rental Requests",
         href: "/admin-dashboard/requests",
         icon: ClipboardList,
-      },
-      {
-        label: "Overview",
-        href: "/admin-dashboard/overview",
-        icon: LayoutDashboard,
-        exact: true,
       },
     ],
   },
