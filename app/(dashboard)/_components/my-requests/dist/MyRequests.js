@@ -92,27 +92,30 @@ var MyRequests = function (_a) {
     var requests = _a.requests;
     var _b = React.useState(false), reviewOpen = _b[0], setReviewOpen = _b[1];
     var _c = React.useState(null), selectedRequest = _c[0], setSelectedRequest = _c[1];
-    var _d = React.useState([]), reviewedIds = _d[0], setReviewedIds = _d[1];
-    var _e = React.useState("5"), rating = _e[0], setRating = _e[1];
-    var _f = React.useState(""), comment = _f[0], setComment = _f[1];
-    var _g = React.useState(false), submitting = _g[0], setSubmitting = _g[1];
+    var _d = React.useState(null), isRedirecting = _d[0], setIsRedirecting = _d[1];
+    var _e = React.useState([]), reviewedIds = _e[0], setReviewedIds = _e[1];
+    var _f = React.useState("5"), rating = _f[0], setRating = _f[1];
+    var _g = React.useState(""), comment = _g[0], setComment = _g[1];
+    var _h = React.useState(false), submitting = _h[0], setSubmitting = _h[1];
     var handlePayNow = function (rentalId) { return __awaiter(void 0, void 0, void 0, function () {
         var result, url, _a;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
                     _b.trys.push([0, 2, , 3]);
+                    setIsRedirecting(rentalId);
                     return [4 /*yield*/, myRequestActions_1.getPaymentUrl(rentalId)];
                 case 1:
                     result = _b.sent();
                     url = result.data.transactionResult;
                     if (url) {
-                        window.open(url, '_blank', 'noopener,noreferrer');
+                        window.location.assign(url);
                     }
                     return [3 /*break*/, 3];
                 case 2:
                     _a = _b.sent();
                     sonner_1.toast.error("Unable to open payment link right now.");
+                    setIsRedirecting(null);
                     return [3 /*break*/, 3];
                 case 3: return [2 /*return*/];
             }
@@ -244,9 +247,11 @@ var MyRequests = function (_a) {
                             "End date"),
                         React.createElement("p", { className: "mt-2 text-sm text-muted-foreground" }, formatDate(request.endDate)))),
                 React.createElement("div", { className: "mt-5 flex flex-wrap gap-2" },
-                    request.status === "APPROVED" && (React.createElement(button_1.Button, { onClick: function () { return handlePayNow(request.id); }, className: "gap-2" },
+                    request.status === "APPROVED" && (React.createElement(button_1.Button, { onClick: function () { return handlePayNow(request.id); }, disabled: isRedirecting === request.id, className: "gap-2" },
                         React.createElement(lucide_react_1.CreditCard, { className: "size-4" }),
-                        "Pay now")),
+                        isRedirecting === request.id
+                            ? "Redirecting..."
+                            : "Pay now")),
                     request.status === "COMPLETED" && !isReviewedRequest && (React.createElement(button_1.Button, { variant: "outline", onClick: function () { return handleOpenReview(request); }, className: "gap-2 cursor-pointer" },
                         React.createElement(lucide_react_1.MessageSquarePlus, { className: "size-4" }),
                         "Review")))));

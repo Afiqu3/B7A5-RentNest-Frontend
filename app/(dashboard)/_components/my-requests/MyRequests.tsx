@@ -101,6 +101,7 @@ const MyRequests = ({ requests }: MyRequestsProps) => {
   const [reviewOpen, setReviewOpen] = React.useState(false);
   const [selectedRequest, setSelectedRequest] =
     React.useState<RentalRequestItem | null>(null);
+  const [isRedirecting, setIsRedirecting] = React.useState<string | null>(null);
   const [reviewedIds, setReviewedIds] = React.useState<string[]>([]);
   const [rating, setRating] = React.useState("5");
   const [comment, setComment] = React.useState("");
@@ -108,13 +109,15 @@ const MyRequests = ({ requests }: MyRequestsProps) => {
 
   const handlePayNow = async (rentalId: string) => {
     try {
+      setIsRedirecting(rentalId);
       const result = await getPaymentUrl(rentalId);
-      const url = result.data.transactionResult ;
+      const url = result.data.transactionResult;
       if (url) {
-        window.open(url, '_blank', 'noopener,noreferrer');
+        window.location.assign(url);
       }
     } catch {
       toast.error("Unable to open payment link right now.");
+      setIsRedirecting(null);
     }
   };
 
@@ -289,10 +292,13 @@ const MyRequests = ({ requests }: MyRequestsProps) => {
                   {request.status === "APPROVED" && (
                     <Button
                       onClick={() => handlePayNow(request.id)}
+                      disabled={isRedirecting === request.id}
                       className="gap-2"
                     >
                       <CreditCard className="size-4" />
-                      Pay now
+                      {isRedirecting === request.id
+                        ? "Redirecting..."
+                        : "Pay now"}
                     </Button>
                   )}
                   {request.status === "COMPLETED" && !isReviewedRequest && (
